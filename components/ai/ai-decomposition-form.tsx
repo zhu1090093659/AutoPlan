@@ -17,6 +17,7 @@ import { zhCN } from "date-fns/locale"
 import type { Subtask } from "@/lib/types"
 import { useTaskStore } from "@/lib/store"
 import { useAIConfig } from "@/lib/ai-config"
+import { trackAIUsageAchievement } from "@/lib/achievement-helpers"
 import {
   Dialog,
   DialogContent,
@@ -26,6 +27,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { AchievementListener } from "@/components/achievements/achievement-listener"
 
 export function AIDecompositionForm() {
   const [task, setTask] = useState("")
@@ -225,16 +227,15 @@ export function AIDecompositionForm() {
       console.log("开始保存任务...");
 
       // 添加任务到存储
+      const dueDateTime = new Date(date.getTime());
+      dueDateTime.setHours(parseInt(hours));
+      dueDateTime.setMinutes(parseInt(minutes));
+      
       const taskId = addTask({
         title,
         description: task,
         status: "pending",
-        dueDate: (() => {
-          const dueDateTime = new Date(date.getTime());
-          dueDateTime.setHours(parseInt(hours));
-          dueDateTime.setMinutes(parseInt(minutes));
-          return dueDateTime.toISOString();
-        })(),
+        dueDate: dueDateTime.toISOString(),
       });
 
       console.log("任务已添加，ID:", taskId);
@@ -243,6 +244,9 @@ export function AIDecompositionForm() {
       const subtaskIds = addSubtasks(taskId, subtasks);
 
       console.log("子任务已添加，共", subtasks.length, "个，ID列表:", subtaskIds);
+
+      // Track AI usage achievement
+      const aiUsageCount = trackAIUsageAchievement();
       
       toast({
         title: "保存成功",
@@ -327,6 +331,9 @@ export function AIDecompositionForm() {
 
   return (
     <div className="space-y-6">
+      {/* Achievement listener to detect unlocked achievements */}
+      <AchievementListener />
+      
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">AI 任务分解</h2>
         <Dialog open={showConfigDialog} onOpenChange={setShowConfigDialog}>

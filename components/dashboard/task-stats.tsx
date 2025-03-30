@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { CheckCircle, Clock, ListTodo, AlertCircle } from "lucide-react"
 import { useTaskStore } from "@/lib/store"
+import { UserLevel } from "@/components/achievements/user-level"
 
 export function TaskStats() {
   const tasks = useTaskStore((state) => state.tasks)
@@ -18,7 +19,7 @@ export function TaskStats() {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">总任务</CardTitle>
@@ -63,7 +64,8 @@ export function TaskStats() {
           <p className="text-xs text-muted-foreground">需要立即处理</p>
         </CardContent>
       </Card>
+      
+      <UserLevel />
     </div>
   )
 }
-
