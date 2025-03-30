@@ -16,8 +16,8 @@ interface AIConfig {
 
 // 默认配置
 const DEFAULT_CONFIG = {
-  baseURL: "https://oneapi.deepwisdom.ai/v1",
-  apiKey: "sk-wkrOfwj4YxzAsqWa577e28702a05495c921414157e9c4c27",
+  baseURL: "https://chatwithai.icu/v1",
+  apiKey: "",
   retryCount: 3,
   modelName: "gpt-4o",
 }
@@ -41,4 +41,3 @@ export const useAIConfig = create<AIConfig>()(
     },
   ),
 )
-

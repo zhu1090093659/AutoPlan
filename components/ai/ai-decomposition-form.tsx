@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Loader2, Sparkles, Calendar, Settings } from "lucide-react"
+import { Loader2, Sparkles, Calendar, Settings, ExternalLink } from "lucide-react"
 import { useToast } from "@/components/ui/use-toast"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Calendar as CalendarComponent } from "@/components/ui/calendar"
@@ -348,7 +348,7 @@ export function AIDecompositionForm() {
                   id="baseURL"
                   value={configBaseURL}
                   onChange={(e) => setConfigBaseURL(e.target.value)}
-                  placeholder="https://api.example.com/v1"
+                  placeholder="https://chatwithai.icu/v1"
                 />
               </div>
               <div className="grid gap-2">
@@ -360,6 +360,19 @@ export function AIDecompositionForm() {
                   type="password"
                   placeholder="sk-..."
                 />
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <p>需要API Key才能使用AI功能，您可以在</p>
+                  <a 
+                    href="https://chatwithai.icu" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-primary hover:underline"
+                  >
+                    chatwithai.icu
+                    <ExternalLink className="ml-1 h-3 w-3" />
+                  </a>
+                  <p>购买</p>
+                </div>
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="modelName">模型名称</Label>

@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/components/ui/use-toast"
 import { useAIConfig } from "@/lib/ai-config"
+import { ExternalLink } from "lucide-react"
 
 export default function SettingsPage() {
   const {
@@ -113,9 +114,9 @@ export default function SettingsPage() {
                   id="baseURL"
                   value={configBaseURL}
                   onChange={(e) => setConfigBaseURL(e.target.value)}
-                  placeholder="https://api.example.com/v1"
+                  placeholder="https://chatwithai.icu/v1"
                 />
-                <p className="text-xs text-muted-foreground">AI服务的基础URL，例如OpenAI API的URL</p>
+                <p className="text-xs text-muted-foreground">AI服务的基础URL，默认使用 chatwithai.icu 服务</p>
               </div>
 
               <div className="grid gap-2">
@@ -127,7 +128,19 @@ export default function SettingsPage() {
                   type="password"
                   placeholder="sk-..."
                 />
-                <p className="text-xs text-muted-foreground">用于访问AI服务的API密钥</p>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <p>需要API Key才能使用AI功能，您可以在</p>
+                  <a 
+                    href="https://chatwithai.icu" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-primary hover:underline"
+                  >
+                    chatwithai.icu
+                    <ExternalLink className="ml-1 h-3 w-3" />
+                  </a>
+                  <p>购买</p>
+                </div>
               </div>
 
               <div className="grid gap-2">
@@ -184,4 +197,3 @@ export default function SettingsPage() {
     </DashboardLayout>
   )
 }
-
