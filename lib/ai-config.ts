@@ -37,7 +37,7 @@ export const useAIConfig = create<AIConfig>()(
       resetToDefaults: () => set(DEFAULT_CONFIG),
     }),
     {
-      name: "gittodo-ai-config",
+      name: "autoplan-ai-config",
     },
   ),
 )

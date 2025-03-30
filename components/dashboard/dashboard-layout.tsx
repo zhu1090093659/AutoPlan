@@ -62,7 +62,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             </Button>
             <Link href="/dashboard" className="flex items-center gap-2">
               <GitBranch className="h-6 w-6" />
-              <span className="text-xl font-bold">GitTodo AI</span>
+              <span className="text-xl font-bold">AutoPlan</span>
             </Link>
           </div>
           <ModeToggle />
@@ -108,4 +108,3 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     </div>
   )
 }
-

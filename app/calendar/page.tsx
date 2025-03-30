@@ -3,8 +3,8 @@ import DashboardLayout from "@/components/dashboard/dashboard-layout"
 import { CalendarView } from "@/components/calendar/calendar-view"
 
 export const metadata: Metadata = {
-  title: "日历 | GitTodo AI",
-  description: "在日历上查看您的任务",
+  title: "日历 | AutoPlan",
+  description: "查看任务日历",
 }
 
 export default function CalendarPage() {
@@ -21,4 +21,3 @@ export default function CalendarPage() {
     </DashboardLayout>
   )
 }
-

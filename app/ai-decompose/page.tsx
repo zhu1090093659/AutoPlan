@@ -3,7 +3,7 @@ import DashboardLayout from "@/components/dashboard/dashboard-layout"
 import { AIDecompositionForm } from "@/components/ai/ai-decomposition-form"
 
 export const metadata: Metadata = {
-  title: "AI 任务分解 | GitTodo AI",
+  title: "AI 任务分解 | AutoPlan",
   description: "使用 AI 分解复杂任务",
 }
 
@@ -21,4 +21,3 @@ export default function AIDecomposePage() {
     </DashboardLayout>
   )
 }
-

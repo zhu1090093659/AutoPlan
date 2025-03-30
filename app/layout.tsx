@@ -15,8 +15,8 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "GitTodo AI",
-  description: "Git-based Todo app with AI task decomposition",
+  title: "AutoPlan",
+  description: "使用AI分解任务，高效管理您的工作",
   generator: 'v0.dev'
 }
 

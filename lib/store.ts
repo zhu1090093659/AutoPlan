@@ -129,7 +129,7 @@ export const useTaskStore = create<TaskState>()(
       },
     }),
     {
-      name: "gittodo-storage",
+      name: "autoplan-storage",
     },
   ),
 )

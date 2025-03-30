@@ -4,7 +4,7 @@ import { AnalyticsCharts } from "@/components/analytics/analytics-charts"
 import { AnalyticsSummary } from "@/components/analytics/analytics-summary"
 
 export const metadata: Metadata = {
-  title: "分析 | GitTodo AI",
+  title: "分析 | AutoPlan",
   description: "分析您的任务执行情况",
 }
 
@@ -23,4 +23,3 @@ export default function AnalyticsPage() {
     </DashboardLayout>
   )
 }
-

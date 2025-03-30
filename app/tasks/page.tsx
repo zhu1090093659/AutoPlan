@@ -5,7 +5,7 @@ import { TaskFilter } from "@/components/tasks/task-filter"
 import { CreateTaskButton } from "@/components/tasks/create-task-button"
 
 export const metadata: Metadata = {
-  title: "任务 | GitTodo AI",
+  title: "任务 | AutoPlan",
   description: "查看和管理您的所有任务",
 }
 
@@ -28,4 +28,3 @@ export default function TasksPage() {
     </DashboardLayout>
   )
 }
-
