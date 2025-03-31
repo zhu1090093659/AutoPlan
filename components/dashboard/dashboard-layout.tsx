@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
-import { LayoutDashboard, CheckSquare, Calendar, BarChart3, GitBranch, Menu, X, Sparkles, Settings } from "lucide-react"
+import { LayoutDashboard, CheckSquare, Calendar, BarChart3, GitBranch, Menu, X, Sparkles, Settings, Trophy, HelpCircle } from "lucide-react"
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -43,6 +43,16 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       href: "/analytics",
       label: "分析",
       icon: BarChart3,
+    },
+    {
+      href: "/achievements",
+      label: "成就",
+      icon: Trophy,
+    },
+    {
+      href: "/guide",
+      label: "使用指南",
+      icon: HelpCircle,
     },
     {
       href: "/settings",

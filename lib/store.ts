@@ -4,21 +4,39 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { v4 as uuidv4 } from "uuid"
 import type { Task, Subtask } from "./types"
+import { Achievement, achievementDefinitions } from "./achievements"
+import { 
+  checkTaskCompletionAchievements, 
+  checkEfficiencyAchievements, 
+  checkStreakAchievements,
+  checkTaskManagementAchievements 
+} from "./achievement-helpers"
 
 interface TaskState {
   tasks: Task[]
+  achievements: Achievement[]
   addTask: (task: Omit<Task, "id" | "createdAt" | "updatedAt">) => string
   updateTask: (id: string, task: Partial<Task>) => void
   deleteTask: (id: string) => void
   addSubtasks: (taskId: string, subtasks: Omit<Subtask, "id" | "taskId" | "createdAt" | "updatedAt">[]) => string[]
   updateSubtask: (id: string, subtask: Partial<Subtask>) => void
   deleteSubtask: (id: string) => void
+  updateAchievementProgress: (id: string, progress: number) => void
+  unlockAchievement: (id: string) => void
+  getLatestUnlockedAchievement: () => Achievement | null
 }
 
 export const useTaskStore = create<TaskState>()(
   persist(
     (set, get) => ({
       tasks: [],
+      
+      // Initialize achievements from definitions
+      achievements: achievementDefinitions.map(achievement => ({
+        ...achievement,
+        progress: 0,
+        unlocked: false
+      })),
 
       addTask: (task) => {
         const id = uuidv4()
@@ -39,6 +57,27 @@ export const useTaskStore = create<TaskState>()(
       },
 
       updateTask: (id, updatedTask) => {
+        const tasks = get().tasks
+        const task = tasks.find(t => t.id === id)
+        
+        if (!task) return
+        
+        // Check for task completion achievement
+        if (updatedTask.status === "completed" && task.status !== "completed") {
+          // Check if task was completed before deadline
+          const dueDate = new Date(task.dueDate)
+          const now = new Date()
+          
+          if (now < dueDate) {
+            checkEfficiencyAchievements()
+          }
+          
+          // Check other achievements
+          checkTaskCompletionAchievements()
+          checkStreakAchievements()
+        }
+        
+        // Update the task
         set((state) => ({
           tasks: state.tasks.map((task) =>
             task.id === id ? { ...task, ...updatedTask, updatedAt: new Date().toISOString() } : task,
@@ -81,6 +120,9 @@ export const useTaskStore = create<TaskState>()(
         set({ tasks: updatedTasks })
 
         console.log("状态更新后的任务列表:", get().tasks)
+        
+        // Check task management achievements
+        checkTaskManagementAchievements()
         
         return newSubtasks.map(st => st.id)
       },
@@ -127,9 +169,70 @@ export const useTaskStore = create<TaskState>()(
           }),
         }))
       },
+      
+      updateAchievementProgress: (id, progress) => {
+        const achievements = get().achievements
+        const achievementIndex = achievements.findIndex(a => a.id === id)
+        
+        if (achievementIndex === -1) return
+        
+        const achievement = achievements[achievementIndex]
+        const newProgress = Math.min(achievement.maxProgress, progress)
+        
+        // Check if achievement is completed
+        const unlocked = newProgress >= achievement.maxProgress && !achievement.unlocked
+        
+        // Update achievement
+        const updatedAchievements = [...achievements]
+        updatedAchievements[achievementIndex] = {
+          ...achievement,
+          progress: newProgress,
+          unlocked: unlocked || achievement.unlocked,
+          unlockedAt: unlocked ? new Date().toISOString() : achievement.unlockedAt
+        }
+        
+        set({ achievements: updatedAchievements })
+      },
+      
+      unlockAchievement: (id) => {
+        const achievements = get().achievements
+        const achievementIndex = achievements.findIndex(a => a.id === id)
+        
+        if (achievementIndex === -1) return
+        
+        const achievement = achievements[achievementIndex]
+        
+        // Skip if already unlocked
+        if (achievement.unlocked) return
+        
+        // Update achievement
+        const updatedAchievements = [...achievements]
+        updatedAchievements[achievementIndex] = {
+          ...achievement,
+          progress: achievement.maxProgress,
+          unlocked: true,
+          unlockedAt: new Date().toISOString()
+        }
+        
+        set({ achievements: updatedAchievements })
+      },
+      
+      getLatestUnlockedAchievement: () => {
+        const achievements = get().achievements
+        const unlockedAchievements = achievements.filter(a => a.unlocked && a.unlockedAt)
+        
+        if (unlockedAchievements.length === 0) return null
+        
+        // Sort by unlocked time descending
+        unlockedAchievements.sort((a, b) => {
+          return new Date(b.unlockedAt!).getTime() - new Date(a.unlockedAt!).getTime()
+        })
+        
+        return unlockedAchievements[0]
+      }
     }),
     {
       name: "autoplan-storage",
-    },
-  ),
+    }
+  )
 )
